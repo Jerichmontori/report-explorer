@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedApprovalRouteImport } from './routes/_authenticated/approval'
+import { Route as AuthenticatedAturanRouteImport } from './routes/_authenticated/aturan'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedKategoriRouteImport } from './routes/_authenticated/kategori'
 import { Route as AuthenticatedLaporanRouteImport } from './routes/_authenticated/laporan'
@@ -35,6 +36,11 @@ const LoginRoute = LoginRouteImport.update({
 const AuthenticatedApprovalRoute = AuthenticatedApprovalRouteImport.update({
   id: '/approval',
   path: '/approval',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAturanRoute = AuthenticatedAturanRouteImport.update({
+  id: '/aturan',
+  path: '/aturan',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -62,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/approval': typeof AuthenticatedApprovalRoute
+  '/aturan': typeof AuthenticatedAturanRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/kategori': typeof AuthenticatedKategoriRoute
   '/laporan': typeof AuthenticatedLaporanRoute
@@ -71,6 +78,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/approval': typeof AuthenticatedApprovalRoute
+  '/aturan': typeof AuthenticatedAturanRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/kategori': typeof AuthenticatedKategoriRoute
   '/laporan': typeof AuthenticatedLaporanRoute
@@ -82,6 +90,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/approval': typeof AuthenticatedApprovalRoute
+  '/_authenticated/aturan': typeof AuthenticatedAturanRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/kategori': typeof AuthenticatedKategoriRoute
   '/_authenticated/laporan': typeof AuthenticatedLaporanRoute
@@ -93,6 +102,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/approval'
+    | '/aturan'
     | '/dashboard'
     | '/kategori'
     | '/laporan'
@@ -102,6 +112,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/approval'
+    | '/aturan'
     | '/dashboard'
     | '/kategori'
     | '/laporan'
@@ -112,6 +123,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/_authenticated/approval'
+    | '/_authenticated/aturan'
     | '/_authenticated/dashboard'
     | '/_authenticated/kategori'
     | '/_authenticated/laporan'
@@ -154,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedApprovalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/aturan': {
+      id: '/_authenticated/aturan'
+      path: '/aturan'
+      fullPath: '/aturan'
+      preLoaderRoute: typeof AuthenticatedAturanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -187,6 +206,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedApprovalRoute: typeof AuthenticatedApprovalRoute
+  AuthenticatedAturanRoute: typeof AuthenticatedAturanRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedKategoriRoute: typeof AuthenticatedKategoriRoute
   AuthenticatedLaporanRoute: typeof AuthenticatedLaporanRoute
@@ -195,6 +215,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedApprovalRoute: AuthenticatedApprovalRoute,
+  AuthenticatedAturanRoute: AuthenticatedAturanRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedKategoriRoute: AuthenticatedKategoriRoute,
   AuthenticatedLaporanRoute: AuthenticatedLaporanRoute,
