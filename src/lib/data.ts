@@ -299,7 +299,7 @@ export async function listPengguna(): Promise<PenggunaLengkap[]> {
     id: r.id,
     email: r.email,
     nama: r.nama,
-    peran: r.user_roles && r.user_roles.length > 0 ? r.user_roles[0].role : null,
+    peran: r.user_roles && r.user_roles.length > 0 ? r.user_roles[0]!.role : null,
   }));
 }
 
