@@ -10,33 +10,142 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthenticatedApprovalRouteImport } from './routes/_authenticated/approval'
+import { Route as AuthenticatedAturanRouteImport } from './routes/_authenticated/aturan'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedKategoriRouteImport } from './routes/_authenticated/kategori'
+import { Route as AuthenticatedLaporanRouteImport } from './routes/_authenticated/laporan'
+import { Route as AuthenticatedPenggunaRouteImport } from './routes/_authenticated/pengguna'
+import { Route as AuthenticatedTransaksiRouteImport } from './routes/_authenticated/transaksi'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedApprovalRoute = AuthenticatedApprovalRouteImport.update({
+  id: '/approval',
+  path: '/approval',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAturanRoute = AuthenticatedAturanRouteImport.update({
+  id: '/aturan',
+  path: '/aturan',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedKategoriRoute = AuthenticatedKategoriRouteImport.update({
+  id: '/kategori',
+  path: '/kategori',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLaporanRoute = AuthenticatedLaporanRouteImport.update({
+  id: '/laporan',
+  path: '/laporan',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPenggunaRoute = AuthenticatedPenggunaRouteImport.update({
+  id: '/pengguna',
+  path: '/pengguna',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTransaksiRoute = AuthenticatedTransaksiRouteImport.update({
+  id: '/transaksi',
+  path: '/transaksi',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/approval': typeof AuthenticatedApprovalRoute
+  '/aturan': typeof AuthenticatedAturanRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/kategori': typeof AuthenticatedKategoriRoute
+  '/laporan': typeof AuthenticatedLaporanRoute
+  '/pengguna': typeof AuthenticatedPenggunaRoute
+  '/transaksi': typeof AuthenticatedTransaksiRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/approval': typeof AuthenticatedApprovalRoute
+  '/aturan': typeof AuthenticatedAturanRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/kategori': typeof AuthenticatedKategoriRoute
+  '/laporan': typeof AuthenticatedLaporanRoute
+  '/pengguna': typeof AuthenticatedPenggunaRoute
+  '/transaksi': typeof AuthenticatedTransaksiRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_authenticated/approval': typeof AuthenticatedApprovalRoute
+  '/_authenticated/aturan': typeof AuthenticatedAturanRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/kategori': typeof AuthenticatedKategoriRoute
+  '/_authenticated/laporan': typeof AuthenticatedLaporanRoute
+  '/_authenticated/pengguna': typeof AuthenticatedPenggunaRoute
+  '/_authenticated/transaksi': typeof AuthenticatedTransaksiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/approval'
+    | '/aturan'
+    | '/dashboard'
+    | '/kategori'
+    | '/laporan'
+    | '/pengguna'
+    | '/transaksi'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/approval'
+    | '/aturan'
+    | '/dashboard'
+    | '/kategori'
+    | '/laporan'
+    | '/pengguna'
+    | '/transaksi'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/login'
+    | '/_authenticated/approval'
+    | '/_authenticated/aturan'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/kategori'
+    | '/_authenticated/laporan'
+    | '/_authenticated/pengguna'
+    | '/_authenticated/transaksi'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +157,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/approval': {
+      id: '/_authenticated/approval'
+      path: '/approval'
+      fullPath: '/approval'
+      preLoaderRoute: typeof AuthenticatedApprovalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/aturan': {
+      id: '/_authenticated/aturan'
+      path: '/aturan'
+      fullPath: '/aturan'
+      preLoaderRoute: typeof AuthenticatedAturanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/kategori': {
+      id: '/_authenticated/kategori'
+      path: '/kategori'
+      fullPath: '/kategori'
+      preLoaderRoute: typeof AuthenticatedKategoriRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/laporan': {
+      id: '/_authenticated/laporan'
+      path: '/laporan'
+      fullPath: '/laporan'
+      preLoaderRoute: typeof AuthenticatedLaporanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pengguna': {
+      id: '/_authenticated/pengguna'
+      path: '/pengguna'
+      fullPath: '/pengguna'
+      preLoaderRoute: typeof AuthenticatedPenggunaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/transaksi': {
+      id: '/_authenticated/transaksi'
+      path: '/transaksi'
+      fullPath: '/transaksi'
+      preLoaderRoute: typeof AuthenticatedTransaksiRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedApprovalRoute: typeof AuthenticatedApprovalRoute
+  AuthenticatedAturanRoute: typeof AuthenticatedAturanRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedKategoriRoute: typeof AuthenticatedKategoriRoute
+  AuthenticatedLaporanRoute: typeof AuthenticatedLaporanRoute
+  AuthenticatedPenggunaRoute: typeof AuthenticatedPenggunaRoute
+  AuthenticatedTransaksiRoute: typeof AuthenticatedTransaksiRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedApprovalRoute: AuthenticatedApprovalRoute,
+  AuthenticatedAturanRoute: AuthenticatedAturanRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedKategoriRoute: AuthenticatedKategoriRoute,
+  AuthenticatedLaporanRoute: AuthenticatedLaporanRoute,
+  AuthenticatedPenggunaRoute: AuthenticatedPenggunaRoute,
+  AuthenticatedTransaksiRoute: AuthenticatedTransaksiRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
