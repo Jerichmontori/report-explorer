@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedApprovalRouteImport } from './routes/_authenticated/approval'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedLaporanRouteImport } from './routes/_authenticated/laporan'
 import { Route as AuthenticatedTransaksiRouteImport } from './routes/_authenticated/transaksi'
 
 const IndexRoute = IndexRouteImport.update({
@@ -40,6 +41,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedLaporanRoute = AuthenticatedLaporanRouteImport.update({
+  id: '/laporan',
+  path: '/laporan',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTransaksiRoute = AuthenticatedTransaksiRouteImport.update({
   id: '/transaksi',
   path: '/transaksi',
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/approval': typeof AuthenticatedApprovalRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/laporan': typeof AuthenticatedLaporanRoute
   '/transaksi': typeof AuthenticatedTransaksiRoute
 }
 export interface FileRoutesByTo {
@@ -58,6 +65,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/approval': typeof AuthenticatedApprovalRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/laporan': typeof AuthenticatedLaporanRoute
   '/transaksi': typeof AuthenticatedTransaksiRoute
 }
 export interface FileRoutesById {
@@ -67,13 +75,15 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/approval': typeof AuthenticatedApprovalRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/laporan': typeof AuthenticatedLaporanRoute
   '/_authenticated/transaksi': typeof AuthenticatedTransaksiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/approval' | '/dashboard' | '/transaksi'
+  fullPaths:
+    '/' | '/login' | '/approval' | '/dashboard' | '/laporan' | '/transaksi'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/approval' | '/dashboard' | '/transaksi'
+  to: '/' | '/login' | '/approval' | '/dashboard' | '/laporan' | '/transaksi'
   id:
     | '__root__'
     | '/'
@@ -81,6 +91,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/approval'
     | '/_authenticated/dashboard'
+    | '/_authenticated/laporan'
     | '/_authenticated/transaksi'
   fileRoutesById: FileRoutesById
 }
@@ -127,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/laporan': {
+      id: '/_authenticated/laporan'
+      path: '/laporan'
+      fullPath: '/laporan'
+      preLoaderRoute: typeof AuthenticatedLaporanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/transaksi': {
       id: '/_authenticated/transaksi'
       path: '/transaksi'
@@ -140,12 +158,14 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedApprovalRoute: typeof AuthenticatedApprovalRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedLaporanRoute: typeof AuthenticatedLaporanRoute
   AuthenticatedTransaksiRoute: typeof AuthenticatedTransaksiRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedApprovalRoute: AuthenticatedApprovalRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedLaporanRoute: AuthenticatedLaporanRoute,
   AuthenticatedTransaksiRoute: AuthenticatedTransaksiRoute,
 }
 
