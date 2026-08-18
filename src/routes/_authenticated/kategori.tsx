@@ -185,7 +185,10 @@ function KategoriForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!kode.trim() || !nama.trim()) return toast.error("Kode dan nama wajib diisi");
+    if (!kode.trim() || !nama.trim()) {
+      toast.error("Kode dan nama wajib diisi");
+      return;
+    }
     setBusy(true);
     try {
       await upsertKategori({

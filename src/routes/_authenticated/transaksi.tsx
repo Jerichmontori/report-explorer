@@ -278,9 +278,18 @@ function NewTransaksiForm({ kategori, onDone }: { kategori: Kategori[]; onDone: 
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!kategoriId) return toast.error("Pilih kategori terlebih dahulu");
-    if (!uraian.trim()) return toast.error("Uraian wajib diisi");
-    if (jumlah <= 0) return toast.error("Jumlah (volume × harga satuan) harus lebih dari 0");
+    if (!kategoriId) {
+      toast.error("Pilih kategori terlebih dahulu");
+      return;
+    }
+    if (!uraian.trim()) {
+      toast.error("Uraian wajib diisi");
+      return;
+    }
+    if (jumlah <= 0) {
+      toast.error("Jumlah (volume × harga satuan) harus lebih dari 0");
+      return;
+    }
     setBusy(true);
     try {
       const input: InputTransaksi = {

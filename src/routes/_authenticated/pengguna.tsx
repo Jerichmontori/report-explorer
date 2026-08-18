@@ -55,7 +55,7 @@ function PenggunaPage() {
 
   async function handleSimpan(p: PenggunaLengkap) {
     const nilai = draft[p.id];
-    const target = nilai === "tanpa" ? null : nilai;
+    const target: Peran | null = nilai === "tanpa" ? null : nilai ?? null;
     if ((p.peran ?? null) === target) return;
     try {
       await aturPeran(p.id, target);
