@@ -22,13 +22,17 @@ const PRIORITAS: Peran[] = ["admin", "ketua", "bendahara", "kasir"];
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
 async function ambilPeran(userId: string): Promise<Peran | null> {
-  const { data, error } = await insforge.database
-    .from("user_roles")
-    .select("role")
-    .eq("user_id", userId);
-  if (error || !data || data.length === 0) return null;
-  const peranAda = (data as { role: Peran }[]).map((r) => r.role);
-  return PRIORITAS.find((p) => peranAda.includes(p)) ?? peranAda[0] ?? null;
+  try {
+    const { data, error } = await insforge.database
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId);
+    if (error || !data || data.length === 0) return null;
+    const peranAda = (data as { role: Peran }[]).map((r) => r.role);
+    return PRIORITAS.find((p) => peranAda.includes(p)) ?? peranAda[0] ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -36,22 +40,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
-    const { data, error } = await insforge.auth.getCurrentUser();
-    if (error || !data?.user) {
+    try {
+      const { data, error } = await insforge.auth.getCurrentUser();
+      if (error || !data?.user) {
+        setUser(null);
+        return;
+      }
+      const u = data.user;
+      const peran = await ambilPeran(u.id);
+      setUser({
+        id: u.id,
+        email: u.email ?? "",
+        name: (u as { name?: string }).name ?? u.email ?? "Pengguna",
+        peran,
+      });
+    } catch {
       setUser(null);
+    } finally {
       setLoading(false);
-      return;
     }
-    const u = data.user;
-    const peran = await ambilPeran(u.id);
-    setUser({
-      id: u.id,
-      email: u.email ?? "",
-      name: (u as { name?: string }).name ?? u.email ?? "Pengguna",
-      peran,
-    });
-    setLoading(false);
   }, []);
+
 
   useEffect(() => {
     void refresh();
