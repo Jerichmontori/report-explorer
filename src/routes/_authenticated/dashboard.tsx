@@ -5,21 +5,19 @@ import {
   TrendingDown,
   TrendingUp,
   Clock,
-  CheckCircle2,
-  XCircle,
   Receipt,
   CheckSquare,
   FileText,
   Plus,
   Users,
+  Target,
 } from "lucide-react";
 import { useAuth } from "../lib/auth";
-import { getRingkasan, listTransaksi } from "../lib/data";
-import { formatRupiah, formatTanggalID } from "../lib/format";
-import { LABEL_PERAN, type Peran, type StatusTransaksi, type Transaksi } from "../lib/types";
+import { getRingkasan, listTransaksi, type Ringkasan } from "../lib/data";
+import { formatRupiah, formatTanggal } from "../lib/format";
+import { LABEL_PERAN, LABEL_STATUS, type Peran, type StatusTransaksi, type Transaksi } from "../lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
 import { cn } from "../lib/utils";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -32,9 +30,14 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   component: DashboardPage,
 });
 
+function countOf(ringkasan: Ringkasan | null, status: StatusTransaksi): number {
+  if (!ringkasan) return 0;
+  return ringkasan.perStatus.find((s) => s.status === status)?.jumlah ?? 0;
+}
+
 function DashboardPage() {
   const { user } = useAuth();
-  const [data, setData] = useState<Awaited<ReturnType<typeof getRingkasan>> | null>(null);
+  const [data, setData] = useState<Ringkasan | null>(null);
   const [recent, setRecent] = useState<Transaksi[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,11 +47,11 @@ function DashboardPage() {
       try {
         const [ringkasan, transaksi] = await Promise.all([
           getRingkasan(),
-          listTransaksi({ limit: 6 }),
+          listTransaksi({}),
         ]);
         if (!active) return;
         setData(ringkasan);
-        setRecent(transaksi);
+        setRecent(transaksi.slice(0, 6));
       } catch (e) {
         console.error(e);
       } finally {
@@ -69,6 +72,11 @@ function DashboardPage() {
   }
 
   const peran = user?.peran as Peran | undefined;
+  const draft = countOf(data, "draft");
+  const menungguBendahara = countOf(data, "menunggu_bendahara");
+  const menungguKetua = countOf(data, "menunggu_ketua");
+  const disetujui = countOf(data, "disetujui");
+  const ditolak = countOf(data, "ditolak");
 
   return (
     <div className="space-y-6">
@@ -101,12 +109,11 @@ function DashboardPage() {
         </div>
       </header>
 
-      {/* Stat cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           icon={Wallet}
           label="Saldo Berjalan"
-          value={formatRupiah(data.totalPemasukan - data.totalPengeluaran)}
+          value={formatRupiah(data.saldo)}
           tone="primary"
         />
         <StatCard
@@ -118,7 +125,7 @@ function DashboardPage() {
         <StatCard
           icon={TrendingDown}
           label="Total Pengeluaran"
-          value={formatRupiah(data.totalPengeluaran)}
+          value={formatRupiah(data.realisasi)}
           tone="danger"
         />
         <StatCard
@@ -129,10 +136,32 @@ function DashboardPage() {
         />
       </div>
 
-      {/* Role-specific panel */}
-      {peran && <RolePanel peran={peran} counts={data} />}
+      {/* Pagu progress */}
+      <Card>
+        <CardContent className="p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-primary" />
+              <p className="text-sm font-medium">Realisasi terhadap Pagu Anggaran</p>
+            </div>
+            <p className="text-sm tabular-nums text-muted-foreground">
+              {formatRupiah(data.realisasi)} / {formatRupiah(data.pagu)}
+            </p>
+          </div>
+          <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-primary transition-all"
+              style={{ width: `${Math.min(100, data.persenRealisasi)}%` }}
+            />
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            {data.persenRealisasi.toFixed(1)}% terrealisasi · sisa {formatRupiah(data.sisaPagu)}
+          </p>
+        </CardContent>
+      </Card>
 
-      {/* Recent transactions */}
+      {peran && <RolePanel peran={peran} draft={draft} menungguBendahara={menungguBendahara} menungguKetua={menungguKetua} disetujui={disetujui} ditolak={ditolak} />}
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Transaksi Terbaru</CardTitle>
@@ -151,9 +180,9 @@ function DashboardPage() {
               {recent.map((t) => (
                 <div key={t.id} className="flex items-center justify-between gap-3 py-3">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">{t.keterangan || t.kategoriNama}</p>
+                    <p className="truncate text-sm font-medium">{t.uraian || t.kategori?.nama || "—"}</p>
                     <p className="text-xs text-muted-foreground">
-                      {formatTanggalID(t.tanggal)} · {t.kategoriNama}
+                      {formatTanggal(t.tanggal)} · {t.kategori?.nama ?? "Tanpa kategori"}
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
@@ -164,7 +193,7 @@ function DashboardPage() {
                       )}
                     >
                       {t.jenis === "pemasukan" ? "+" : "−"}
-                      {formatRupiah(t.nominal)}
+                      {formatRupiah(t.jumlah)}
                     </span>
                     <StatusBadge status={t.status} />
                   </div>
@@ -180,10 +209,18 @@ function DashboardPage() {
 
 function RolePanel({
   peran,
-  counts,
+  draft,
+  menungguBendahara,
+  menungguKetua,
+  disetujui,
+  ditolak,
 }: {
   peran: Peran;
-  counts: Awaited<ReturnType<typeof getRingkasan>>;
+  draft: number;
+  menungguBendahara: number;
+  menungguKetua: number;
+  disetujui: number;
+  ditolak: number;
 }) {
   if (peran === "kasir") {
     return (
@@ -192,9 +229,9 @@ function RolePanel({
           <CardTitle>Tugas Kasir</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-3">
-          <MiniStat icon={Receipt} label="Draft (belum diajukan)" value={counts.draft} />
-          <MiniStat icon={Clock} label="Menunggu persetujuan" value={counts.menungguApproval} />
-          <MiniStat icon={CheckCircle2} label="Disetujui" value={counts.disetujui} />
+          <MiniStat icon={Receipt} label="Draft (belum diajukan)" value={draft} />
+          <MiniStat icon={Clock} label="Menunggu persetujuan" value={menungguBendahara + menungguKetua} />
+          <MiniStat icon={CheckSquare} label="Disetujui" value={disetujui} />
         </CardContent>
       </Card>
     );
@@ -212,8 +249,8 @@ function RolePanel({
           </Button>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-2">
-          <MiniStat icon={Clock} label="Menunggu Bendahara" value={counts.menungguBendahara} />
-          <MiniStat icon={CheckCircle2} label="Sudah Anda setujui" value={counts.disetujui} />
+          <MiniStat icon={Clock} label="Menunggu Bendahara" value={menungguBendahara} />
+          <MiniStat icon={CheckSquare} label="Disetujui" value={disetujui} />
         </CardContent>
       </Card>
     );
@@ -231,14 +268,13 @@ function RolePanel({
           </Button>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-3">
-          <MiniStat icon={Clock} label="Menunggu Ketua" value={counts.menungguKetua} />
-          <MiniStat icon={CheckCircle2} label="Disetujui" value={counts.disetujui} />
-          <MiniStat icon={XCircle} label="Ditolak" value={counts.ditolak} />
+          <MiniStat icon={Clock} label="Menunggu Ketua" value={menungguKetua} />
+          <MiniStat icon={CheckSquare} label="Disetujui" value={disetujui} />
+          <MiniStat icon={Clock} label="Ditolak" value={ditolak} />
         </CardContent>
       </Card>
     );
   }
-  // admin
   return (
     <Card>
       <CardHeader>
@@ -315,13 +351,18 @@ function MiniStat({
 }
 
 export function StatusBadge({ status }: { status: StatusTransaksi }) {
-  const map: Record<StatusTransaksi, { label: string; cls: string }> = {
-    draft: { label: "Draft", cls: "bg-muted text-muted-foreground" },
-    menunggu_bendahara: { label: "Menunggu Bendahara", cls: "bg-amber-500/10 text-amber-700" },
-    menunggu_ketua: { label: "Menunggu Ketua", cls: "bg-blue-500/10 text-blue-700" },
-    disetujui: { label: "Disetujui", cls: "bg-emerald-500/10 text-emerald-700" },
-    ditolak: { label: "Ditolak", cls: "bg-rose-500/10 text-rose-700" },
+  const tones: Partial<Record<StatusTransaksi, string>> = {
+    draft: "bg-muted text-muted-foreground",
+    diajukan: "bg-slate-500/10 text-slate-700",
+    menunggu_bendahara: "bg-amber-500/10 text-amber-700",
+    disetujui_bendahara: "bg-amber-500/10 text-amber-700",
+    menunggu_ketua: "bg-blue-500/10 text-blue-700",
+    disetujui: "bg-emerald-500/10 text-emerald-700",
+    ditolak: "bg-rose-500/10 text-rose-700",
   };
-  const s = map[status];
-  return <Badge variant="secondary" className={cn("font-medium", s.cls)}>{s.label}</Badge>;
+  return (
+    <span className={cn("inline-flex items-center rounded px-2 py-0.5 text-xs font-medium", tones[status])}>
+      {LABEL_STATUS[status]}
+    </span>
+  );
 }
