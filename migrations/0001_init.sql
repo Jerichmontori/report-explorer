@@ -29,7 +29,6 @@ CREATE TABLE public.user_roles (
 );
 
 GRANT SELECT ON public.user_roles TO authenticated;
-GRANT ALL ON public.user_roles TO service_role;
 ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
 
 -- Setiap pengguna terautentikasi dapat melihat semua peran (keperluan pengecekan)
@@ -70,7 +69,6 @@ CREATE TABLE public.kategori (
 );
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.kategori TO authenticated;
-GRANT ALL ON public.kategori TO service_role;
 ALTER TABLE public.kategori ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "kategori_read" ON public.kategori FOR SELECT TO authenticated USING (true);
@@ -104,7 +102,6 @@ CREATE TABLE public.transaksi (
 );
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.transaksi TO authenticated;
-GRANT ALL ON public.transaksi TO service_role;
 ALTER TABLE public.transaksi ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "transaksi_read" ON public.transaksi FOR SELECT TO authenticated USING (true);
@@ -135,7 +132,6 @@ CREATE TABLE public.approval_log (
 );
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.approval_log TO authenticated;
-GRANT ALL ON public.approval_log TO service_role;
 ALTER TABLE public.approval_log ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "approval_log_read" ON public.approval_log FOR SELECT TO authenticated USING (true);
@@ -155,7 +151,6 @@ CREATE TABLE public.aturan_approval (
 );
 
 GRANT SELECT, UPDATE ON public.aturan_approval TO authenticated;
-GRANT ALL ON public.aturan_approval TO service_role;
 ALTER TABLE public.aturan_approval ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "aturan_read" ON public.aturan_approval FOR SELECT TO authenticated USING (true);
@@ -177,7 +172,6 @@ CREATE TABLE public.status_laporan (
 );
 
 GRANT SELECT, INSERT, UPDATE ON public.status_laporan TO authenticated;
-GRANT ALL ON public.status_laporan TO service_role;
 ALTER TABLE public.status_laporan ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "status_laporan_read" ON public.status_laporan FOR SELECT TO authenticated USING (true);
