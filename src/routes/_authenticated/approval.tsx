@@ -1,22 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Clock, MessageSquare } from "lucide-react";
-import { useAuth } from "../lib/auth";
+import { useAuth } from "../../lib/auth";
 import {
   listTransaksi,
   setujuiTransaksi,
   tolakTransaksi,
   listApprovalLog,
-} from "../lib/data";
-import { formatRupiah, formatTanggal, formatWaktu } from "../lib/format";
-import { LABEL_PERAN, LABEL_STATUS, type ApprovalLog, type Peran, type StatusTransaksi, type Transaksi } from "../lib/types";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
-import { Label } from "../components/ui/label";
+} from "../../lib/data";
+import { formatRupiah, formatTanggal, formatWaktu } from "../../lib/format";
+import { LABEL_PERAN, LABEL_STATUS, type ApprovalLog, type Peran, type StatusTransaksi, type Transaksi } from "../../lib/types";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Textarea } from "../../components/ui/textarea";
+import { Label } from "../../components/ui/label";
 import { toast } from "sonner";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 import { StatusBadge } from "./dashboard";
 
 export const Route = createFileRoute("/_authenticated/approval")({

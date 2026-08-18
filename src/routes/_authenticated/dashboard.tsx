@@ -12,13 +12,13 @@ import {
   Users,
   Target,
 } from "lucide-react";
-import { useAuth } from "../lib/auth";
-import { getRingkasan, listTransaksi, type Ringkasan } from "../lib/data";
-import { formatRupiah, formatTanggal } from "../lib/format";
-import { LABEL_PERAN, LABEL_STATUS, type Peran, type StatusTransaksi, type Transaksi } from "../lib/types";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { cn } from "../lib/utils";
+import { useAuth } from "../../lib/auth";
+import { getRingkasan, listTransaksi, type Ringkasan } from "../../lib/data";
+import { formatRupiah, formatTanggal } from "../../lib/format";
+import { LABEL_PERAN, LABEL_STATUS, type Peran, type StatusTransaksi, type Transaksi } from "../../lib/types";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { cn } from "../../lib/utils";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({

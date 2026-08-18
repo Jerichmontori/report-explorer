@@ -1,7 +1,7 @@
 import { createFileRoute, useSearch, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Plus, Search, Receipt, ArrowLeft, Trash2, Send } from "lucide-react";
-import { useAuth } from "../lib/auth";
+import { useAuth } from "../../lib/auth";
 import {
   listTransaksi,
   listKategori,
@@ -9,23 +9,23 @@ import {
   hapusTransaksi,
   ajukanTransaksi,
   type InputTransaksi,
-} from "../lib/data";
-import { formatRupiah, formatTanggal, formatAngka } from "../lib/format";
-import { LABEL_STATUS, type Kategori, type Transaksi, type JenisTransaksi, type StatusTransaksi } from "../lib/types";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
+} from "../../lib/data";
+import { formatRupiah, formatTanggal, formatAngka } from "../../lib/format";
+import { LABEL_STATUS, type Kategori, type Transaksi, type JenisTransaksi, type StatusTransaksi } from "../../lib/types";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select";
-import { Textarea } from "../components/ui/textarea";
+} from "../../components/ui/select";
+import { Textarea } from "../../components/ui/textarea";
 import { toast } from "sonner";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 import { StatusBadge } from "./dashboard";
 
 export const Route = createFileRoute("/_authenticated/transaksi")({

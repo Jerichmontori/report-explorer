@@ -1,20 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { Users, ShieldCheck } from "lucide-react";
-import { listPengguna, aturPeran, type PenggunaLengkap } from "../lib/data";
-import { LABEL_PERAN, type Peran } from "../lib/types";
-import { useAuth } from "../lib/auth";
-import { Card, CardContent } from "../components/ui/card";
-import { Button } from "../components/ui/button";
+import { listPengguna, aturPeran, type PenggunaLengkap } from "../../lib/data";
+import { LABEL_PERAN, type Peran } from "../../lib/types";
+import { useAuth } from "../../lib/auth";
+import { Card, CardContent } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select";
+} from "../../components/ui/select";
 import { toast } from "sonner";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 
 export const Route = createFileRoute("/_authenticated/pengguna")({
   head: () => ({

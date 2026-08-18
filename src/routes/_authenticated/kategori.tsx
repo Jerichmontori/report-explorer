@@ -1,22 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { Plus, Pencil, Trash2, Tags } from "lucide-react";
-import { listKategori, upsertKategori, hapusKategori } from "../lib/data";
-import { formatRupiah } from "../lib/format";
-import { type JenisTransaksi, type Kategori } from "../lib/types";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
+import { listKategori, upsertKategori, hapusKategori } from "../../lib/data";
+import { formatRupiah } from "../../lib/format";
+import { type JenisTransaksi, type Kategori } from "../../lib/types";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select";
+} from "../../components/ui/select";
 import { toast } from "sonner";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 
 export const Route = createFileRoute("/_authenticated/kategori")({
   head: () => ({

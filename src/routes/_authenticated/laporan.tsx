@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Printer, FileText } from "lucide-react";
-import { getRingkasan, listTransaksi, listKategori, type Ringkasan } from "../lib/data";
-import { formatRupiah, formatTanggal, formatTanggalSingkat, terbilangRupiah } from "../lib/format";
-import { LABEL_STATUS, type Kategori, type Transaksi } from "../lib/types";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { cn } from "../lib/utils";
+import { getRingkasan, listTransaksi, listKategori, type Ringkasan } from "../../lib/data";
+import { formatRupiah, formatTanggal, formatTanggalSingkat, terbilangRupiah } from "../../lib/format";
+import { LABEL_STATUS, type Kategori, type Transaksi } from "../../lib/types";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { cn } from "../../lib/utils";
 
 export const Route = createFileRoute("/_authenticated/laporan")({
   head: () => ({
