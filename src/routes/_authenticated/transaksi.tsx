@@ -119,7 +119,7 @@ function TransaksiPage() {
         </div>
         {isKasir && (
           <Button asChild>
-            <Link to="/transaksi?aksi=tambah">
+            <Link to="/transaksi" search={{ aksi: "tambah" }}>
               <Plus className="h-4 w-4" />
               Tambah Transaksi
             </Link>
@@ -265,7 +265,7 @@ function NewTransaksiForm({ kategori, onDone }: { kategori: Kategori[]; onDone: 
 
   useEffect(() => {
     if (kategoriTersedia.length > 0 && !kategoriTersedia.find((k) => k.id === kategoriId)) {
-      setKategoriId(kategoriTersedia[0].id);
+      setKategoriId(kategoriTersedia[0]!.id);
     } else if (kategoriTersedia.length === 0) {
       setKategoriId("");
     }

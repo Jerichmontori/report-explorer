@@ -54,7 +54,7 @@ function Index() {
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link to="/login?mode=daftar">Daftar Akun Baru</Link>
+            <Link to="/login" search={{ mode: "daftar" }}>Daftar Akun Baru</Link>
           </Button>
         </div>
 

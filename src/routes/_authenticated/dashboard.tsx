@@ -94,7 +94,7 @@ function DashboardPage() {
         <div className="flex gap-2">
           {peran === "kasir" && (
             <Button asChild>
-              <Link to="/transaksi?aksi=tambah">
+              <Link to="/transaksi" search={{ aksi: "tambah" }}>
                 <Plus className="h-4 w-4" />
                 Tambah Transaksi
               </Link>
