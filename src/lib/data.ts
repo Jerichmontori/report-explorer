@@ -161,17 +161,17 @@ export async function createTransaksi(input: InputTransaksi): Promise<Transaksi>
 
 export async function updateTransaksi(id: string, input: Partial<InputTransaksi>): Promise<void> {
   const payload: Record<string, unknown> = {};
-  if (input.jenis !== undefined) payload.jenis = input.jenis;
-  if (input.tanggal !== undefined) payload.tanggal = input.tanggal;
-  if (input.kategori_id !== undefined) payload.kategori_id = input.kategori_id;
-  if (input.mata_anggaran !== undefined) payload.mata_anggaran = input.mata_anggaran || null;
-  if (input.uraian !== undefined) payload.uraian = input.uraian;
-  if (input.volume !== undefined) payload.volume = Number(input.volume);
-  if (input.satuan !== undefined) payload.satuan = input.satuan || null;
-  if (input.harga_satuan !== undefined) payload.harga_satuan = Number(input.harga_satuan);
-  if (input.no_bukti !== undefined) payload.no_bukti = input.no_bukti || null;
-  if (input.pihak !== undefined) payload.pihak = input.pihak || null;
-  if (input.catatan !== undefined) payload.catatan = input.catatan || null;
+  if (input['jenis'] !== undefined) payload['jenis'] = input['jenis'];
+  if (input['tanggal'] !== undefined) payload['tanggal'] = input['tanggal'];
+  if (input['kategori_id'] !== undefined) payload['kategori_id'] = input['kategori_id'];
+  if (input['mata_anggaran'] !== undefined) payload['mata_anggaran'] = input['mata_anggaran'] || null;
+  if (input['uraian'] !== undefined) payload['uraian'] = input['uraian'];
+  if (input['volume'] !== undefined) payload['volume'] = Number(input['volume']);
+  if (input['satuan'] !== undefined) payload['satuan'] = input['satuan'] || null;
+  if (input['harga_satuan'] !== undefined) payload['harga_satuan'] = Number(input['harga_satuan']);
+  if (input['no_bukti'] !== undefined) payload['no_bukti'] = input['no_bukti'] || null;
+  if (input['pihak'] !== undefined) payload['pihak'] = input['pihak'] || null;
+  if (input['catatan'] !== undefined) payload['catatan'] = input['catatan'] || null;
   const { error } = await insforge.database.from("transaksi").update(payload).eq("id", id);
   if (error) throw error;
 }
