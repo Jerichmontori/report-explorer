@@ -124,14 +124,14 @@ export interface InputTransaksi {
   jenis: Transaksi["jenis"];
   tanggal: string;
   kategori_id: string | null;
-  mata_anggaran?: string;
+  mata_anggaran?: string | undefined;
   uraian: string;
   volume: number;
-  satuan?: string;
+  satuan?: string | undefined;
   harga_satuan: number;
-  no_bukti?: string;
-  pihak?: string;
-  catatan?: string;
+  no_bukti?: string | undefined;
+  pihak?: string | undefined;
+  catatan?: string | undefined;
 }
 
 export async function createTransaksi(input: InputTransaksi): Promise<Transaksi> {
