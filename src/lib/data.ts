@@ -115,7 +115,8 @@ export async function getTransaksi(id: string): Promise<Transaksi | null> {
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
-  return data as Transaksi | null;
+  if (!data) return null;
+  return normalizeTransaksi([data])[0];
 }
 
 export interface InputTransaksi {
