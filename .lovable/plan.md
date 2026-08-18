@@ -70,9 +70,10 @@ Tema formal-institusional: hijau tua/emas lembut, tipografi serif untuk judul + 
 
 ## Catatan teknis
 
-- Routing file-based TanStack Router: `src/routes/index.tsx` ditulis ulang jadi halaman masuk; layout per peran (`admin.tsx`, `bendahara.tsx`, `ketua.tsx`) dengan `<Outlet />` + sidebar.
-- Store client: `src/lib/store/` (React context + reducer) menyimpan transaksi, kategori, pengguna, dan peran aktif; data awal diisi dari angka laporan FKUB 2025 sebagai contoh.
-- Helper perhitungan (total, saldo, rekap per kategori, format rupiah) di `src/lib/keuangan.ts`.
+- Routing file-based TanStack Router: `src/routes/index.tsx` ditulis ulang jadi halaman masuk; layout per peran (`admin.tsx`, `kasir.tsx`, `bendahara.tsx`, `ketua.tsx`) dengan `<Outlet />` + sidebar.
+- Store client: `src/lib/store/` (React context + reducer) menyimpan transaksi (beserta status & riwayat persetujuan), kategori, aturan approval, pengguna, dan peran aktif; data awal diisi dari angka laporan FKUB 2025 sebagai contoh.
+- Helper perhitungan (total, saldo, rekap per kategori, format rupiah) dan logika alur persetujuan (`tentukanJalurApproval`, `langkahBerikutnya`) di `src/lib/keuangan.ts` dan `src/lib/approval.ts`.
+
 - Grafik memakai recharts; komponen UI dari shadcn yang sudah tersedia.
 - Setiap route punya `head()` sendiri (title/description/og).
 - Tanpa server function, tanpa Lovable Cloud — semua data hilang saat refresh kecuali peran aktif.
