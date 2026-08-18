@@ -87,7 +87,7 @@ export async function listTransaksi(filter: FilterTransaksi = {}): Promise<Trans
   if (filter.sampai) q = q.lte("tanggal", filter.sampai);
   const { data, error } = await q;
   if (error) throw error;
-  let rows = (data ?? []) as Transaksi[];
+  let rows = normalizeTransaksi(data ?? []);
   if (filter.q) {
     const s = filter.q.toLowerCase();
     rows = rows.filter(
@@ -98,6 +98,14 @@ export async function listTransaksi(filter: FilterTransaksi = {}): Promise<Trans
     );
   }
   return rows;
+}
+
+// PostgREST mengembalikan relasi sebagai array; konversi ke objek tunggal.
+function normalizeTransaksi(rows: unknown[]): Transaksi[] {
+  return (rows as Record<string, unknown>[]).map((r) => ({
+    ...r,
+    kategori: Array.isArray(r.kategori) ? (r.kategori[0] as Kategori | undefined) ?? null : (r.kategori as Kategori | null | undefined) ?? null,
+  })) as unknown as Transaksi[];
 }
 
 export async function getTransaksi(id: string): Promise<Transaksi | null> {
