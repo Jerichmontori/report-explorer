@@ -191,15 +191,16 @@ function KategoriForm({
     }
     setBusy(true);
     try {
-      await upsertKategori({
-        id: initial?.id,
+      const payload: Parameters<typeof upsertKategori>[0] = {
         kode: kode.trim(),
         nama: nama.trim(),
         jenis,
         pagu: Number(pagu.replace(/[^\d]/g, "")) || 0,
         wajib_bendahara: wajibBendahara,
         urutan: Number(urutan) || 0,
-      });
+      };
+      if (initial?.id) payload.id = initial.id;
+      await upsertKategori(payload);
       toast.success(initial ? "Kategori diperbarui" : "Kategori ditambahkan");
       onDone();
     } catch (e: any) {
